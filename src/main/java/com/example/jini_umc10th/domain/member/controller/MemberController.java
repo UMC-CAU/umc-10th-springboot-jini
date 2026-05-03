@@ -19,12 +19,13 @@ public class MemberController {
     // 홈화면 조회
     @GetMapping("/api/members/me")
     public ApiResponse<MemberResDTO.HomeResDTO> getHome(
+            @RequestParam Long memberId,
             @RequestParam(required = false) String cursor,
             @RequestParam String regionId,
             @RequestParam(defaultValue = "20") int size
     ) {
         BaseSuccessCode code = MemberSuccessCode.OK;
-        return ApiResponse.onSuccess(code, memberService.getHome(cursor, regionId, size));
+        return ApiResponse.onSuccess(code, memberService.getHome(memberId, cursor, regionId, size));
     }
 
     // 회원가입
