@@ -18,8 +18,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public MemberResDTO.HomeResDTO getHome(String cursor, String regionId, int size) {
-        // TODO : 홈화면 조회 구현
+    public MemberResDTO.HomeResDTO getHome(Long memberId, String cursor, String regionId, int size) {
+        // TODO : memberId로 해당 회원 조회 후 홈화면 데이터 반환
         return MemberResDTO.HomeResDTO.builder()
                 .missions(List.of())
                 .nextCursor(null)

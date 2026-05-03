@@ -15,6 +15,7 @@ public class MissionService {
     //private final MissionRepository missionRepository;
 
     public MissionResDTO.MissionListResDTO getMissions(
+            Long memberId,
             String cursor,
             MissionStatus status,
             int size

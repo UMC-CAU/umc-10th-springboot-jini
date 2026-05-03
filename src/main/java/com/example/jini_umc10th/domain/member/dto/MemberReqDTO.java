@@ -14,7 +14,7 @@ public class MemberReqDTO {
             Gender gender,
             LocalDate birth,
             String address,
-            List<String> food // [1,2] 대신 ["한식", "중식"]처럼 사용..?
+            List<Long> food // foodId 사용
     ) {
         public record TermsAgreementDTO(
                 boolean isOver14,
