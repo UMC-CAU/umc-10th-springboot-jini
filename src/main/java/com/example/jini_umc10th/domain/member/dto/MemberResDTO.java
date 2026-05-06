@@ -23,9 +23,23 @@ public class MemberResDTO {
 
     // 홈화면 조회 응답 DTO
     @Builder
-    public record HomeResDTO(
+    public record homeResDTO(
             List<MissionResDTO.MissionDTO> missions,
             String nextCursor,    // 다음 페이지 커서
-            boolean hasNext       // 다음 페이지 존재 여부
+            boolean hasNext,      // 다음 페이지 존재 여부
+            String areaName,
+            int completedNum
+
+    ) {}
+
+    // 마이페이지 조회 응답 DTO
+    @Builder
+    public record profileResDTO(
+            String name,
+            String emailAddress,
+            Boolean isEmailVerified,
+            String phoneNumber,
+            Boolean isPhoneVerified,
+            int point
     ) {}
 }

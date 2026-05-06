@@ -18,10 +18,10 @@ public class MemberController {
 
     // 홈화면 조회
     @GetMapping("/api/members/me")
-    public ApiResponse<MemberResDTO.HomeResDTO> getHome(
-            @RequestParam Long memberId,
+    public ApiResponse<MemberResDTO.homeResDTO> getHome(
+            @RequestParam Long memberId, // 임시
             @RequestParam(required = false) String cursor,
-            @RequestParam String regionId,
+            @RequestParam Long regionId,
             @RequestParam(defaultValue = "20") int size
     ) {
         BaseSuccessCode code = MemberSuccessCode.OK;
@@ -44,5 +44,14 @@ public class MemberController {
     ) {
         BaseSuccessCode code = MemberSuccessCode.OK;
         return ApiResponse.onSuccess(code, memberService.login(dto));
+    }
+
+    //마이페이지 화면
+    @GetMapping("/api/members/me/profile")
+    public ApiResponse<MemberResDTO.profileResDTO> profile(
+            @RequestParam Long memberId // 임시
+    ) {
+        BaseSuccessCode code = MemberSuccessCode.OK;
+        return ApiResponse.onSuccess(code, memberService.profile(memberId));
     }
 }
