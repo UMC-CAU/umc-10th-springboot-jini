@@ -1,5 +1,6 @@
 package com.example.jini_umc10th.domain.mission.entity;
 
+import com.example.jini_umc10th.global.enums.FoodCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,20 +12,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "restaurant_image")
-public class RestaurantPhoto {
+@Table(name = "restaurant_category")
+public class RestaurantCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "restaurant_image_id")
+    @Column(name = "restaurant_category_id")
     private Long id;
 
-    @Column(name = "restaurant_image_url", nullable = false, length = 500)
-    private String url;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id", nullable = false)
-    private Restaurant restaurant;
-
-
+    @Column(name = "category", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private FoodCategory category;
 }
