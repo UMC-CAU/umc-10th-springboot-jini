@@ -12,7 +12,7 @@ public class MissionResDTO {
     public record MissionDTO(
             Long missionId,
             String missionContent,
-            Long restaurantId,
+            String restaurantName,
             int point,
             LocalDate dueDate
     ) {}
