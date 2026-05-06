@@ -9,6 +9,7 @@ public class ReviewResDTO{
     @Builder
     public record postReviewResDTO(
             Long reviewId,           // 생성된 리뷰 ID
+            String name,
             int rating,
             String content,
             String[] imageUrl,
