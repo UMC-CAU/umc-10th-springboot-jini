@@ -16,14 +16,14 @@ public class MissionController {
     private final MissionService missionService;
 
     @GetMapping("/api/members/me/missions")
-    public ApiResponse<MissionResDTO.MissionListResDTO> getMission(
+    public ApiResponse<MissionResDTO.MissionListResDTO> getMemberMission(
             @RequestParam Long memberId,
             @RequestParam(required = false) String cursor,
             @RequestParam MissionStatus missionStatus,
             @RequestParam(defaultValue = "20") int size
     ){
         BaseSuccessCode code = GeneralSuccessCode.OK;
-        return ApiResponse.onSuccess(code, missionService.getMissions(memberId, cursor, missionStatus, size));
+        return ApiResponse.onSuccess(code, missionService.getMemberMissions(memberId, cursor, missionStatus, size));
     }
 
     @PostMapping("/api/missions/{missionId}/completed")

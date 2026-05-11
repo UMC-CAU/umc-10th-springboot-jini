@@ -18,7 +18,7 @@ public class MissionService {
     private final MissionRepository missionRepository;
     private final MemberMissionRepository memberMissionRepository;
 
-    public MissionResDTO.MissionListResDTO getMissions(
+    public MissionResDTO.MissionListResDTO getMemberMissions(
             Long memberId,
             String cursor,
             MissionStatus status,
@@ -26,7 +26,7 @@ public class MissionService {
     ){
         Long cursorId = (cursor == null) ? 0L : Long.parseLong(cursor);
 
-        List<MemberMission> list = memberMissionRepository.findMissions(memberId, status, cursorId, size + 1); // size보다 1 크게 조회하여 hasNext 판단
+        List<MemberMission> list = memberMissionRepository.findMemberMission(memberId, status, cursorId, size + 1); // size보다 1 크게 조회하여 hasNext 판단
 
         boolean hasNext = list.size() > size;
         List<MemberMission> result = hasNext ? list.subList(0, size) : list;

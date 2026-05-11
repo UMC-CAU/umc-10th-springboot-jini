@@ -11,7 +11,7 @@ import java.util.List;
 public interface MemberMissionRepository extends JpaRepository<MemberMission, Long> {
 
     @Query("SELECT mm FROM MemberMission mm WHERE mm.member.id = :memberId AND mm.status = :status AND mm.id > :cursorId ORDER BY mm.id ASC LIMIT :size")
-    List<MemberMission> findMissions(
+    List<MemberMission> findMemberMission(
             @Param("memberId") Long memberId,
             @Param("status") MissionStatus status,
             @Param("cursorId") Long cursorId,
