@@ -4,16 +4,13 @@ import com.example.jini_umc10th.domain.inquiry.enums.InquiryStatus;
 import com.example.jini_umc10th.domain.member.entity.Member;
 import com.example.jini_umc10th.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inquiry")
 public class Inquiry extends BaseEntity {
 
