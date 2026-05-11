@@ -1,5 +1,4 @@
-package com.example.jini_umc10th.domain.member.entity;
-
+package com.example.jini_umc10th.domain.mission.entity;
 
 import com.example.jini_umc10th.global.enums.FoodCategory;
 import jakarta.persistence.*;
@@ -13,17 +12,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "preferred_food")
-public class Food {
+@Table(name = "restaurant_category")
+public class RestaurantCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "preferred_food_id")
+    @Column(name = "restaurant_category_id")
     private Long id;
 
-    @Column(name = "food_category", nullable = false)
+    @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)
-    private FoodCategory foodCategory;
-
-
+    private FoodCategory category;
 }

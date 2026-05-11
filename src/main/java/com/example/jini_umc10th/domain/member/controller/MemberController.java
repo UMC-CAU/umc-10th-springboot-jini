@@ -2,7 +2,7 @@ package com.example.jini_umc10th.domain.member.controller;
 
 import com.example.jini_umc10th.domain.member.dto.MemberReqDTO;
 import com.example.jini_umc10th.domain.member.dto.MemberResDTO;
-import com.example.jini_umc10th.domain.member.exception.code.MemberSuccessCode;
+import com.example.jini_umc10th.global.apiPayload.code.GeneralSuccessCode;
 import com.example.jini_umc10th.domain.member.service.MemberService;
 import com.example.jini_umc10th.global.apiPayload.ApiResponse;
 import com.example.jini_umc10th.global.apiPayload.code.BaseSuccessCode;
@@ -18,13 +18,13 @@ public class MemberController {
 
     // 홈화면 조회
     @GetMapping("/api/members/me")
-    public ApiResponse<MemberResDTO.HomeResDTO> getHome(
-            @RequestParam Long memberId,
+    public ApiResponse<MemberResDTO.homeResDTO> getHome(
+            @RequestParam Long memberId, // 임시
             @RequestParam(required = false) String cursor,
-            @RequestParam String regionId,
+            @RequestParam Long regionId,
             @RequestParam(defaultValue = "20") int size
     ) {
-        BaseSuccessCode code = MemberSuccessCode.OK;
+        BaseSuccessCode code = GeneralSuccessCode.OK;
         return ApiResponse.onSuccess(code, memberService.getHome(memberId, cursor, regionId, size));
     }
 
@@ -33,7 +33,7 @@ public class MemberController {
     public ApiResponse<MemberResDTO.signUpResDTO> signUp(
             @RequestBody MemberReqDTO.signUpReqDTO dto
     ) {
-        BaseSuccessCode code = MemberSuccessCode.OK;
+        BaseSuccessCode code = GeneralSuccessCode.OK;
         return ApiResponse.onSuccess(code, memberService.createUser(dto));
     }
 
@@ -42,7 +42,16 @@ public class MemberController {
     public ApiResponse<MemberResDTO.loginResDTO> login(
             @RequestBody MemberReqDTO.loginReqDTO dto
     ) {
-        BaseSuccessCode code = MemberSuccessCode.OK;
+        BaseSuccessCode code = GeneralSuccessCode.OK;
         return ApiResponse.onSuccess(code, memberService.login(dto));
+    }
+
+    //마이페이지 화면
+    @GetMapping("/api/members/me/profile")
+    public ApiResponse<MemberResDTO.profileResDTO> profile(
+            @RequestParam Long memberId // 임시
+    ) {
+        BaseSuccessCode code = GeneralSuccessCode.OK;
+        return ApiResponse.onSuccess(code, memberService.profile(memberId));
     }
 }

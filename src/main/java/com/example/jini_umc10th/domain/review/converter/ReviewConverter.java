@@ -8,6 +8,7 @@ public class ReviewConverter {
 
     public static ReviewResDTO.postReviewResDTO toPostReviewResDTO(
             Long reviewId,
+            String name,
             int rating,
             String content,
             String[] imageUrl,
@@ -15,6 +16,7 @@ public class ReviewConverter {
     ){
         return ReviewResDTO.postReviewResDTO.builder()
                 .reviewId(reviewId) // 임시
+                .name(name)
                 .rating(rating)
                 .content(content)
                 .imageUrl(imageUrl)
