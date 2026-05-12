@@ -23,4 +23,15 @@ public class ReviewController {
         BaseSuccessCode code = GeneralSuccessCode.OK;
         return ApiResponse.onSuccess(code, reviewService.postReview(storeId, dto));
     }
+
+    @GetMapping("/api/members/me/reviews")
+    public ApiResponse<ReviewResDTO.Pagination<ReviewResDTO.reviewDTO>> getReviews(
+            @RequestParam Long memberId,
+            @RequestParam Integer pageSize,
+            @RequestParam String cursor,
+            @RequestParam String query
+    ){
+        BaseSuccessCode code = GeneralSuccessCode.OK;
+        return ApiResponse.onSuccess(code, reviewService.getReviews(memberId, pageSize, cursor, query));
+    }
 }

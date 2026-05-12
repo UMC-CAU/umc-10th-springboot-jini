@@ -21,6 +21,9 @@ public enum ReviewErrorCode implements BaseErrorCode {
     INVALID_SCORE(HttpStatus.BAD_REQUEST,
             "REVIEW400_1",
             "유효하지 않은 별점입니다."),
+    QUERY_NOT_VALID(HttpStatus.BAD_REQUEST,
+            "REVIEW400_2",
+            "잘못된 쿼리입니다.")
     ;
 
     private final HttpStatus status;
