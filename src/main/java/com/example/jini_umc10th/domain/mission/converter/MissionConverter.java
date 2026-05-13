@@ -19,14 +19,23 @@ public class MissionConverter {
     }
 
     public static MissionResDTO.MissionListResDTO toMissionListDTO(
-            List<MissionResDTO.MissionDTO> missions,   // 미션 목록
-            String nextCursor,           // 다음 페이지 커서
-            boolean hasNext
+            List<MissionResDTO.MissionDTO> missions   // 미션 목록
     ){
         return MissionResDTO.MissionListResDTO.builder()
                 .missions(missions)
-                .nextCursor(nextCursor)
-                .hasNext(hasNext)
+                .build();
+    }
+
+    // 페이지네이션 틀 생성
+    public static <T> MissionResDTO.Pagination<T> toPagination(
+            List<T> data,
+            Integer pageNumber,
+            Integer pageSize
+    ){
+        return MissionResDTO.Pagination.<T>builder()
+                .data(data)
+                .pageNumber(pageNumber)
+                .pageSize(pageSize)
                 .build();
     }
 
