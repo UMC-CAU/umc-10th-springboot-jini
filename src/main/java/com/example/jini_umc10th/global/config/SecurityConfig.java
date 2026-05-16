@@ -1,5 +1,7 @@
 package com.example.jini_umc10th.global.config;
 
+import com.example.jini_umc10th.global.security.handler.CustomAccessDenied;
+import com.example.jini_umc10th.global.security.handler.CustomEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,6 +45,10 @@ public class SecurityConfig {
                         .logoutUrl("/logout") // 이 URL로 POST요청 시 로그아웃 처리
                         .logoutSuccessUrl("/login?logout") // 로그아웃 성공 후 이동할 URL
                         .permitAll() // 누구나 접근 가능
+                )
+                .exceptionHandling(exception -> exception // 예외 상황 핸들러
+                        .accessDeniedHandler(customAccessDenied())       // 403 - 인증은 됐지만 권한 없음
+                        .authenticationEntryPoint(customEntryPoint())    // 401 - 인증 안 됨
                 );
 
         return http.build();
@@ -51,6 +57,16 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // 비밀번호 솔트를 위한 BCrypt를 PasswordEncoder로 설정
+    }
+
+    @Bean
+    public CustomAccessDenied customAccessDenied() {
+        return new CustomAccessDenied();
+    }
+
+    @Bean
+    public CustomEntryPoint customEntryPoint() {
+        return new CustomEntryPoint();
     }
 
 }
