@@ -15,6 +15,7 @@ import com.example.jini_umc10th.domain.mission.exception.code.MissionErrorCode;
 import com.example.jini_umc10th.domain.mission.repository.AreaRepository;
 import com.example.jini_umc10th.domain.mission.repository.MemberMissionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberMissionRepository memberMissionRepository;
     private final AreaRepository areaRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public MemberResDTO.homeResDTO getHome(Long memberId, String cursor, Long regionId, int size) {
 
@@ -60,14 +62,14 @@ public class MemberService {
         MemberReqDTO.signUpReqDTO dto
     ){
         Member member = Member.builder()
-                .id(1L) // 임시
                 .name(dto.name())
                 .gender(dto.gender())
                 .birth(dto.birth())
                 .address(dto.address())
-                .emailAddress("temp@google.com")   // 임시
+                .emailAddress(dto.emailAddress())
                 .socialProvider(SocialProvider.GOOGLE) // 임시
                 .socialUid("1234")          // 임시
+                .password(passwordEncoder.encode(dto.password())) // 폼 로그인 기반 비밀번호. BCrypt로 솔트처리
                 .build();
 
         Member saved = memberRepository.save(member);
@@ -77,7 +79,7 @@ public class MemberService {
 
     public MemberResDTO.loginResDTO login(
             MemberReqDTO.loginReqDTO dto
-    ){
+    ) {
         // TODO : 로그인 기능 구현
         return MemberConverter.toLoginResDTO(dto.socialProvider(), dto.socialUid());
     }
