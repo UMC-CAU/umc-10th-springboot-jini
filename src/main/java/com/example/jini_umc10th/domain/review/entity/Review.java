@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,5 +38,11 @@ public class Review extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY)
+    private List<ReviewPhoto> reviewPhotos;
+
+    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY)
+    private List<ReviewReply> reviewReplies;
 
 }

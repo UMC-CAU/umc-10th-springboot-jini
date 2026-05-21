@@ -1,5 +1,6 @@
 package com.example.jini_umc10th.domain.review.entity;
 
+import com.example.jini_umc10th.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "review_reply")
-public class ReviewReply {
+public class ReviewReply extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -6,6 +6,7 @@ import com.example.jini_umc10th.domain.review.service.ReviewService;
 import com.example.jini_umc10th.global.apiPayload.ApiResponse;
 import com.example.jini_umc10th.global.apiPayload.code.BaseSuccessCode;
 import com.example.jini_umc10th.global.apiPayload.code.GeneralSuccessCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +19,20 @@ public class ReviewController {
     @PostMapping("/api/stores/{store-id}/reviews")
     public ApiResponse<ReviewResDTO.postReviewResDTO> postReview(
             @PathVariable("store-id") Long storeId,
-            @RequestBody ReviewReqDTO.postReviewReqDTO dto
+            @RequestBody @Valid ReviewReqDTO.postReviewReqDTO dto
     ) {
         BaseSuccessCode code = GeneralSuccessCode.OK;
         return ApiResponse.onSuccess(code, reviewService.postReview(storeId, dto));
+    }
+
+    @GetMapping("/api/members/me/reviews")
+    public ApiResponse<ReviewResDTO.Pagination<ReviewResDTO.reviewDTO>> getReviews(
+            @RequestParam Long memberId,
+            @RequestParam Integer pageSize,
+            @RequestParam String cursor,
+            @RequestParam String query
+    ){
+        BaseSuccessCode code = GeneralSuccessCode.OK;
+        return ApiResponse.onSuccess(code, reviewService.getReviews(memberId, pageSize, cursor, query));
     }
 }

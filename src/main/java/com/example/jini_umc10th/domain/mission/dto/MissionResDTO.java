@@ -19,10 +19,18 @@ public class MissionResDTO {
 
     @Builder
     public record MissionListResDTO(
-            List<MissionDTO> missions,   // 미션 목록
-            String nextCursor,           // 다음 페이지 커서
-            boolean hasNext              // 다음 페이지 여부
+            List<MissionDTO> missions   // 미션 목록
+
     ) {}
+
+    // 페이지네이션 틀
+    @Builder
+    public record Pagination<T>(
+            List<T> data,
+            Integer pageNumber,
+            Integer pageSize
+    ) {}
+
 
     @Builder
     public record MissionCompleteResDTO(

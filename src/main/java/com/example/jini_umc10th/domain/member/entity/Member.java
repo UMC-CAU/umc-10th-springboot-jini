@@ -34,7 +34,8 @@ public class Member extends BaseEntity {
 
     @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    @Builder.Default
+    private Gender gender = Gender.NONE;
 
     @Column(name = "birth", nullable = false)
     private LocalDate birth;

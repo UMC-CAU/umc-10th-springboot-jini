@@ -2,11 +2,15 @@ package com.example.jini_umc10th.domain.mission.service;
 
 import com.example.jini_umc10th.domain.mission.converter.MissionConverter;
 import com.example.jini_umc10th.domain.mission.dto.MissionResDTO;
+import com.example.jini_umc10th.domain.mission.entity.Mission;
 import com.example.jini_umc10th.domain.mission.entity.mapping.MemberMission;
 import com.example.jini_umc10th.domain.mission.enums.MissionStatus;
 import com.example.jini_umc10th.domain.mission.repository.MemberMissionRepository;
 import com.example.jini_umc10th.domain.mission.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,26 +22,33 @@ public class MissionService {
     private final MissionRepository missionRepository;
     private final MemberMissionRepository memberMissionRepository;
 
-    public MissionResDTO.MissionListResDTO getMemberMissions(
+    // 회원 미션 조회
+    public MissionResDTO.Pagination<MissionResDTO.MissionDTO> getMemberMissions(
             Long memberId,
-            String cursor,
             MissionStatus status,
-            int size
+            Integer pageSize,
+            Integer pageNumber,
+            String sort
     ){
-        Long cursorId = (cursor == null) ? 0L : Long.parseLong(cursor);
+        // 정렬 정보 생성
+        Sort sortInfo;
+        if (sort != null) {
+            sortInfo = Sort.by(sort);
+        } else {
+            sortInfo = Sort.by("id").descending();
+        }
 
-        List<MemberMission> list = memberMissionRepository.findMemberMission(memberId, status, cursorId, size + 1); // size보다 1 크게 조회하여 hasNext 판단
+        // 페이지 정보들을 PageRequest로 만들기
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sortInfo);
 
-        boolean hasNext = list.size() > size;
-        List<MemberMission> result = hasNext ? list.subList(0, size) : list;
+        // 회원의 미션들을 조회
+        Page<MemberMission> missionList = memberMissionRepository.findAllByMember_IdAndStatus(memberId, status, pageRequest); // PageRequest는 Pageable을 구현한 객체.
 
-        String nextCursor = hasNext ? String.valueOf(result.getLast().getId()) : null;
-
-        List<MissionResDTO.MissionDTO> missionDTOs = result.stream()
-                .map(MissionConverter::toMissionDTO)
-                .toList();
-
-        return MissionConverter.toMissionListDTO(missionDTOs, nextCursor, hasNext);
+        return MissionConverter.toPagination(
+                missionList.map(MissionConverter::toMissionDTO).toList(),
+                missionList.getNumber(),
+                missionList.getSize()
+        );
     }
 
     public MissionResDTO.MissionCompleteResDTO completeMission(
