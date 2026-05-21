@@ -15,7 +15,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Slice<Review> findAllByMember_IdAndIdLessThanOrderByIdDesc(Long memberId, long idCursor, Pageable pageable);
 
     // 별점 순으로 회원의 리뷰 조회
-    @Query("SELECT r FROM Review r WHERE r.member.id = :memberId AND  (r.rating < :ratingCursor OR (r.rating = :ratingCursor AND r.id < :idCursor)) ORDER BY r.rating DESC, r.id DESC")
+    @Query("SELECT r FROM Review r " +
+            "WHERE r.member.id = :memberId AND  (r.rating < :ratingCursor OR (r.rating = :ratingCursor AND r.id < :idCursor)) " +
+            "ORDER BY r.rating DESC, r.id DESC")
     Slice<Review> findAllByMember_IdWithRatingCursorDesc(
             @Param("memberId") Long memberId,
             @Param("ratingCursor")BigDecimal ratingCursor,

@@ -13,7 +13,9 @@ import java.util.List;
 public interface MemberMissionRepository extends JpaRepository<MemberMission, Long> {
 
     // 커서 기반으로 작성했던 회원의 미션 조회
-    @Query("SELECT mm FROM MemberMission mm WHERE mm.member.id = :memberId AND mm.status = :status AND mm.id > :cursorId ORDER BY mm.id ASC LIMIT :size")
+    @Query("SELECT mm FROM MemberMission mm " +
+            "WHERE mm.member.id = :memberId AND mm.status = :status AND mm.id > :cursorId " +
+            "ORDER BY mm.id ASC LIMIT :size")
     List<MemberMission> findMemberMission(
             @Param("memberId") Long memberId,
             @Param("status") MissionStatus status,
@@ -24,7 +26,9 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
     // 오프셋 기반으로 작성한 회원의 미션 조회
     Page<MemberMission> findAllByMember_IdAndStatus(Long memberId, MissionStatus Status, Pageable pageable);
 
-    @Query("SELECT mm FROM MemberMission mm WHERE mm.member.id = :memberId AND mm.status = :status AND mm.id > :cursorId AND mm.mission.restaurant.area.id = :regionId ORDER BY mm.id ASC LIMIT :size")
+    @Query("SELECT mm FROM MemberMission mm " +
+            "WHERE mm.member.id = :memberId AND mm.status = :status AND mm.id > :cursorId AND mm.mission.restaurant.area.id = :regionId " +
+            "ORDER BY mm.id ASC LIMIT :size")
     List<MemberMission> findMissionsInArea(
             @Param("memberId") Long memberId,
             @Param("status") MissionStatus status,
@@ -33,7 +37,8 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
             @Param("size") int size
     );
 
-    @Query("SELECT COUNT(mm) FROM MemberMission mm WHERE mm.member.id = :memberId AND mm.status = :status AND mm.mission.restaurant.area.id = :regionId")
+    @Query("SELECT COUNT(mm) FROM MemberMission mm " +
+            "WHERE mm.member.id = :memberId AND mm.status = :status AND mm.mission.restaurant.area.id = :regionId")
     int countMissions(
             @Param("memberId") Long memberId,
             @Param("status") MissionStatus status,
