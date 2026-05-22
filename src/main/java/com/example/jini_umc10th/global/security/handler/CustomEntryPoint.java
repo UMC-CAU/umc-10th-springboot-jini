@@ -12,7 +12,11 @@ import java.io.IOException;
 
 public class CustomEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AuthenticationException authException
+    ) throws IOException {
         SecurityResponseUtil.sendErrorResponse(response, GeneralErrorCode.UNAUTHORIZED);
     }
 }

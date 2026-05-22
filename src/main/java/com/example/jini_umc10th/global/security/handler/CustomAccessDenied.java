@@ -12,7 +12,11 @@ import java.io.IOException;
 
 public class CustomAccessDenied implements AccessDeniedHandler {
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+    public void handle(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AccessDeniedException accessDeniedException
+    ) throws IOException {
         SecurityResponseUtil.sendErrorResponse(response, GeneralErrorCode.FORBIDDEN);
     }
 }
