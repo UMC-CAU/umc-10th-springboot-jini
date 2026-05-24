@@ -68,7 +68,7 @@ public class Member extends BaseEntity {
     @Builder.Default
     private boolean isPhoneVerified = false;
 
-
-
+    @Column(name = "password") // 폼 로그인 기반 비밀번호
+    private String password;
 
 }

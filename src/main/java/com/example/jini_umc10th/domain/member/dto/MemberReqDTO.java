@@ -22,7 +22,12 @@ public class MemberReqDTO {
             LocalDate birth,
             String address,
             @NotNull(message = "선호음식은 필수입니다.")
-            List<Long> food // foodId 사용
+            List<Long> food, // foodId 사용
+            @NotBlank(message = "이메일 주소는 필수입니다.")
+            String emailAddress,
+            @NotBlank(message = "비밀번호는 필수입니다.")
+            String password
+
     ) {
         public record TermsAgreementDTO(
                 @AssertTrue(message = "만 14세 이상이어야 합니다.")
