@@ -23,11 +23,11 @@ public class AuthMember implements UserDetails {
 
     @Override
     public @Nullable String getPassword() {
-        return member.getPassword();
+        return null; // JWT 토큰 기반시에는 member.getPassword() 반환
     }
 
     @Override
     public String getUsername() {
-        return member.getEmailAddress();
-    }
+        return member.getSocialUid();
+    } // JWT 토큰 기반시에는 member.getEmailAddress() 반환
 }

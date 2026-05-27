@@ -1,6 +1,8 @@
 package com.example.jini_umc10th.domain.member.converter;
 
 import com.example.jini_umc10th.domain.member.dto.MemberResDTO;
+import com.example.jini_umc10th.domain.member.entity.Member;
+import com.example.jini_umc10th.global.security.dto.OAuthDTO;
 import com.example.jini_umc10th.domain.mission.dto.MissionResDTO;
 
 import java.time.LocalDateTime;
@@ -39,6 +41,16 @@ public class MemberConverter {
     ) {
         return MemberResDTO.loginResDTO.builder()
                 .accessToken(accessToken)
+                .build();
+    }
+
+    // 소셜 로그인
+    public static Member toMember(OAuthDTO dto) {
+        return Member.builder()
+                .name(dto.getName())
+                .emailAddress(dto.getSocialEmail())
+                .socialProvider(dto.getSocialType())
+                .socialUid(dto.getSocialUid())
                 .build();
     }
 

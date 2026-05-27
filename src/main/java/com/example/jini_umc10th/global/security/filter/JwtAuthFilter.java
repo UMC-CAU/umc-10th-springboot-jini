@@ -1,5 +1,6 @@
 package com.example.jini_umc10th.global.security.filter;
 
+import com.example.jini_umc10th.domain.member.enums.SocialProvider;
 import com.example.jini_umc10th.global.apiPayload.ApiResponse;
 import com.example.jini_umc10th.global.apiPayload.code.BaseErrorCode;
 import com.example.jini_umc10th.global.apiPayload.code.GeneralErrorCode;
@@ -45,6 +46,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             token = token.replace("Bearer ", "");
             // accessToken 검증하기: 올바른 토큰이면
             if (jwtUtil.isValid(token)) {
+
+                // JWT 토큰에서 유저 정보 조회 : UID와 소셜로그인 타입 가져오기
+                String uid = jwtUtil.getUid(token);
+                SocialProvider socialProvider = jwtUtil.getSocialProvider(token);
+
+                // 인증 객체 생성: 로그인 타입과 UID로 찾아온 뒤, 인증 객체 생성
+                UserDetails member = customUserDetailsService.loadUserByUidAndSocialProvider(uid, socialProvider);
+                Authentication auth = new UsernamePasswordAuthenticationToken(
+                        member,
+                        null,
+                        member.getAuthorities()
+                );
+
+                /* JWT 기반
                 // 토큰에서 이메일 추출
                 String email = jwtUtil.getEmail(token);
                 // 인증 객체 생성: 이메일로 찾아온 뒤, 인증 객체 생성
@@ -53,8 +68,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         user,
                         null,
                         user.getAuthorities()
-                );
-                // 인증 완료 후 SecurityContextHolder에 넣기
+                );*/
+
+                //인증 완료 후 SecurityContextHolder에 넣기
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
             filterChain.doFilter(request, response);

@@ -37,7 +37,7 @@ public class Member extends BaseEntity {
     @Builder.Default
     private Gender gender = Gender.NONE;
 
-    @Column(name = "birth", nullable = false)
+    @Column(name = "birth")
     private LocalDate birth;
 
     @Column(name = "address")

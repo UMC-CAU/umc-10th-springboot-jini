@@ -1,5 +1,6 @@
 package com.example.jini_umc10th.global.security.util;
 
+import com.example.jini_umc10th.domain.member.enums.SocialProvider;
 import com.example.jini_umc10th.global.security.entity.AuthMember;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -49,6 +50,24 @@ public class JwtUtil {
         }
     }
 
+    // 토큰에서 소셜 로그인 타입 가져오기
+    public SocialProvider getSocialProvider(String token) {
+        try {
+            String provider = (String) getClaims(token).getPayload().get("social_provider");
+            return SocialProvider.valueOf(provider);
+        } catch (JwtException e) {
+            return null;
+        }
+    }
+
+    public String getUid(String token) {
+        try {
+            return (String) getClaims(token).getPayload().get("social_uid");
+        } catch (JwtException e) {
+            return null;
+        }
+    }
+
     /** 토큰 유효성 확인
      *
      * @param token 유효한지 확인할 토큰
@@ -76,6 +95,8 @@ public class JwtUtil {
                 .subject(member.getUsername()) // User 이메일을 Subject로
                 .claim("role", authorities)
                 .claim("email", member.getUsername())
+                .claim("social_uid", member.getMember().getSocialUid())
+                .claim("social_provider", member.getMember().getSocialProvider().name())
                 .issuedAt(Date.from(now)) // 언제 발급한지
                 .expiration(Date.from(now.plus(expiration))) // 언제까지 유효한지
                 .signWith(secretKey) // sign할 Key
