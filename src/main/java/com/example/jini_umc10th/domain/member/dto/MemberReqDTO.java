@@ -41,10 +41,19 @@ public class MemberReqDTO {
         ) {}
     }
 
+    /* 소셜로그인 기반
     public record loginReqDTO(
             @NotNull(message = "소셜 로그인 제공자는 필수입니다.")
             SocialProvider socialProvider,  // KAKAO, NAVER, APPLE, GOOGLE
             @NotBlank(message = "소셜 UID는 필수입니다.")
             String socialUid
+    ) {}*/
+
+    // JWT 토큰 기반 로그인
+    public record loginReqDTO(
+            @NotBlank(message = "이메일은 필수입니다.")
+            String emailAddress,
+            @NotBlank(message = "비밀번호는 필수입니다.")
+            String password
     ) {}
 }
