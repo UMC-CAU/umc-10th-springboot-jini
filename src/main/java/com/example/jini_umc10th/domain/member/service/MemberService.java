@@ -104,18 +104,18 @@ public class MemberService {
     }
 
     public MemberResDTO.profileResDTO profile(
-            Long memberId
+            AuthMember member
     ) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Member m = member.getMember();
 
         return MemberConverter.toProfileResDTO(
-                member.getName(),
-                member.getEmailAddress(),
-                member.isEmailVerified(),
-                member.getPhoneNumber(),
-                member.isPhoneVerified(),
-                member.getPoint()
+                m.getName(),
+                m.getEmailAddress(),
+                m.isEmailVerified(),
+                m.getPhoneNumber(),
+                m.isPhoneVerified(),
+                m.getPoint()
         );
     }
 }
