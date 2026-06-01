@@ -14,6 +14,8 @@ import com.example.jini_umc10th.domain.mission.exception.MissionException;
 import com.example.jini_umc10th.domain.mission.exception.code.MissionErrorCode;
 import com.example.jini_umc10th.domain.mission.repository.AreaRepository;
 import com.example.jini_umc10th.domain.mission.repository.MemberMissionRepository;
+import com.example.jini_umc10th.global.security.entity.AuthMember;
+import com.example.jini_umc10th.global.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,7 @@ public class MemberService {
     private final MemberMissionRepository memberMissionRepository;
     private final AreaRepository areaRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public MemberResDTO.homeResDTO getHome(Long memberId, String cursor, Long regionId, int size) {
 
@@ -73,30 +76,46 @@ public class MemberService {
                 .build();
 
         Member saved = memberRepository.save(member);
+        // 회원가입 후 바로 JWT 발급
+        String accessToken = jwtUtil.createAccessToken(new AuthMember(saved));
 
-        return MemberConverter.toSignUpResDTO(saved.getId(), dto.name(), saved.getCreatedAt());
+        return MemberConverter.toSignUpResDTO(saved.getId(), dto.name(), saved.getCreatedAt(), accessToken);
     }
 
+    // JWT 토큰 기반 로그인
     public MemberResDTO.loginResDTO login(
             MemberReqDTO.loginReqDTO dto
     ) {
-        // TODO : 로그인 기능 구현
-        return MemberConverter.toLoginResDTO(dto.socialProvider(), dto.socialUid());
+        // 1. 이메일로 회원 조회
+        Member member = memberRepository.findByEmailAddress(dto.emailAddress())
+                .orElseThrow(() -> new
+                        MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        // 2. 비밀번호 검증
+        if (!passwordEncoder.matches(dto.password(), member.getPassword())) {
+            throw new MemberException(MemberErrorCode.INVALID_PASSWORD);
+        }
+
+        // 3. JWT 발급
+        AuthMember authMember = new AuthMember(member);
+        String accessToken = jwtUtil.createAccessToken(authMember);
+
+        return MemberConverter.toLoginResDTO(accessToken);
     }
 
     public MemberResDTO.profileResDTO profile(
-            Long memberId
+            AuthMember member
     ) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Member m = member.getMember();
 
         return MemberConverter.toProfileResDTO(
-                member.getName(),
-                member.getEmailAddress(),
-                member.isEmailVerified(),
-                member.getPhoneNumber(),
-                member.isPhoneVerified(),
-                member.getPoint()
+                m.getName(),
+                m.getEmailAddress(),
+                m.isEmailVerified(),
+                m.getPhoneNumber(),
+                m.isPhoneVerified(),
+                m.getPoint()
         );
     }
 }

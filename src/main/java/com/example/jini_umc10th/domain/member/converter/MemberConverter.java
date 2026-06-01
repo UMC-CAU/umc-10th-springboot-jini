@@ -1,7 +1,8 @@
 package com.example.jini_umc10th.domain.member.converter;
 
 import com.example.jini_umc10th.domain.member.dto.MemberResDTO;
-import com.example.jini_umc10th.domain.member.enums.SocialProvider;
+import com.example.jini_umc10th.domain.member.entity.Member;
+import com.example.jini_umc10th.global.security.dto.OAuthDTO;
 import com.example.jini_umc10th.domain.mission.dto.MissionResDTO;
 
 import java.time.LocalDateTime;
@@ -12,15 +13,18 @@ public class MemberConverter {
     public static MemberResDTO.signUpResDTO toSignUpResDTO(
             Long memberId,
             String name,
-            LocalDateTime createdAt
+            LocalDateTime createdAt,
+            String accessToken
     ) {
         return MemberResDTO.signUpResDTO.builder()
                 .memberId(memberId)
                 .name(name)
                 .createdAt(createdAt)
+                .accessToken(accessToken)
                 .build();
     }
 
+    /* 소셜로그인 기반
     public static MemberResDTO.loginResDTO toLoginResDTO(
             SocialProvider socialProvider,  // KAKAO, NAVER, APPLE, GOOGLE
             String socialUid
@@ -28,6 +32,25 @@ public class MemberConverter {
         return MemberResDTO.loginResDTO.builder()
                 .memberId(1L) // 임시
                 .name("kingsejin") // 임시
+                .build();
+    }*/
+
+    // JWT 토큰 기반 로그인
+    public static MemberResDTO.loginResDTO toLoginResDTO(
+            String accessToken
+    ) {
+        return MemberResDTO.loginResDTO.builder()
+                .accessToken(accessToken)
+                .build();
+    }
+
+    // 소셜 로그인
+    public static Member toMember(OAuthDTO dto) {
+        return Member.builder()
+                .name(dto.getName())
+                .emailAddress(dto.getSocialEmail())
+                .socialProvider(dto.getSocialType())
+                .socialUid(dto.getSocialUid())
                 .build();
     }
 

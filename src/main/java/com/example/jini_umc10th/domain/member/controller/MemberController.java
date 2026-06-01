@@ -6,8 +6,10 @@ import com.example.jini_umc10th.global.apiPayload.code.GeneralSuccessCode;
 import com.example.jini_umc10th.domain.member.service.MemberService;
 import com.example.jini_umc10th.global.apiPayload.ApiResponse;
 import com.example.jini_umc10th.global.apiPayload.code.BaseSuccessCode;
+import com.example.jini_umc10th.global.security.entity.AuthMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -50,9 +52,9 @@ public class MemberController {
     //마이페이지 화면
     @GetMapping("/api/members/me/profile")
     public ApiResponse<MemberResDTO.profileResDTO> profile(
-            @RequestParam Long memberId // 임시
-    ) {
+            @AuthenticationPrincipal AuthMember member
+            ) {
         BaseSuccessCode code = GeneralSuccessCode.OK;
-        return ApiResponse.onSuccess(code, memberService.profile(memberId));
+        return ApiResponse.onSuccess(code, memberService.profile(member));
     }
 }

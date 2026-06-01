@@ -12,14 +12,22 @@ public class MemberResDTO {
     public record signUpResDTO(
             Long memberId,         // 생성된 회원 ID
             String name,           // 이름
-            LocalDateTime createdAt // 가입 일시
+            LocalDateTime createdAt, // 가입 일시
+            String accessToken     // JWT 토큰
     ){}
 
+    /* 소셜로그인 기반
     @Builder
     public record loginResDTO(
             Long memberId,
             String name
-    ){}
+    ){}*/
+
+    // JWT 토큰 기반 로그인
+    @Builder
+    public record loginResDTO(
+            String accessToken
+    ) {}
 
     // 홈화면 조회 응답 DTO
     @Builder
