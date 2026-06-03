@@ -2,7 +2,7 @@ name: CI/CD Pipeline (.jar)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" , "week10" ]
 
 jobs:
   build:
