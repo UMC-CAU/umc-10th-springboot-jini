@@ -1,4 +1,7 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
+
   application:
     name: "jini_umc10th" # ???? ??
 
@@ -27,7 +30,7 @@ spring:
             client-secret: ${KAKAO_REST_API_SECRET}
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
-            redirect-uri: "http://localhost:8080/oauth/callback/kakao"
+            redirect-uri: ${KAKAO_REDIRECT_URI}
             scope:
               - profile_nickname
               - account_email
